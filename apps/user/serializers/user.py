@@ -6,7 +6,7 @@ class UserRegistrationRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = [
-            'email', 
+            'username', 
             'password',
         ]
         

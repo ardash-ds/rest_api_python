@@ -34,9 +34,10 @@ class SubscriptionModel(models.Model):
         on_delete=models.CASCADE,
         related_name='subscription_user',
     )
-    block =  models.ForeignKey(
+    block = models.ForeignKey(
         'block.BlockModel',  
         on_delete=models.CASCADE,
         related_name='subscription_block',
     )
+    read_status = models.BooleanField(db_default=False)
     
