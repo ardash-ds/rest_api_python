@@ -6,6 +6,7 @@ from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 
+from apps.block.models import BlockModel
 from ..serializers import (
     UserRegistrationRequestSerializer,
     GetUserResponseSerializer,
@@ -19,11 +20,11 @@ def sign_up_core(request: HttpRequest) -> None:
     serializer = UserRegistrationRequestSerializer(data=data)
     serializer.is_valid(raise_exception=True)
 
-    UserModel.objects.create_user(
+    user = UserModel.objects.create_user(
         username=serializer.validated_data["username"], 
         password=serializer.validated_data["password"], 
-
     )
+    BlockModel.objects.create(user=user)
     
     
 def sign_in_core(request: HttpRequest) -> UserModel:

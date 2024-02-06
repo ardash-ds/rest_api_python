@@ -30,6 +30,11 @@ urlpatterns = [
         include("apps.user.urls.user"),
         name="user",
     ), 
+    path(
+        "block/",
+        include("apps.block.urls.block"),
+        name="block",
+    ), 
 ]
 
 if settings.DEBUG:

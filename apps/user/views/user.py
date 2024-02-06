@@ -1,7 +1,7 @@
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.http import HttpResponse, HttpRequest
 
@@ -60,7 +60,7 @@ def sign_in(request: HttpRequest) -> HttpResponse:
     summary="WORKS: Gets the username of the authorized user",
     methods=["GET"],
     responses={
-        201: OpenApiResponse(description="Successfully registrated."),
+        200: OpenApiResponse(response=GetUserResponseSerializer),
         400: OpenApiResponse(description="Error: Bad request"),
         404: OpenApiResponse(description="Error: Not found"),
         422: OpenApiResponse(description="Error: Unprocessable entity"),
@@ -71,7 +71,7 @@ def sign_in(request: HttpRequest) -> HttpResponse:
     ],
 )
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_user(request: HttpRequest) -> HttpResponse:
     response = get_user_core(request=request)
     return Response(response.data, status=status.HTTP_200_OK)

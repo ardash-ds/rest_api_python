@@ -2,16 +2,13 @@ from django.db import models
 
 
 class BlockModel(models.Model):
-    title = models.CharField(max_length=100, blank=False, unique=True)
+    title = models.CharField(max_length=100, blank=True)
     user = models.OneToOneField(
         'user.UserModel',  
         on_delete=models.CASCADE,
         related_name='block_user',
     )
     created_at = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
     
 
 class PostModel(models.Model):
