@@ -10,3 +10,11 @@ class UserRegistrationRequestSerializer(serializers.ModelSerializer):
             'password',
         ]
         
+
+class GetUserResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = [
+            'username', 
+        ]
+        

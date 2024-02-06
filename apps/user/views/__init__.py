@@ -1,5 +1,7 @@
-from .user import sign_up
+from .user import sign_up, sign_in, get_user
 
-__all_ = (
+__all__ = (
     'sign_up',
+    'sign_in',
+    'get_user',
 )

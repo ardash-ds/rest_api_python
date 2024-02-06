@@ -6,7 +6,10 @@ from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 
-from ..serializers import UserRegistrationRequestSerializer
+from ..serializers import (
+    UserRegistrationRequestSerializer,
+    GetUserResponseSerializer,
+)
 from ..models import UserModel
 
 
@@ -21,4 +24,22 @@ def sign_up_core(request: HttpRequest) -> None:
         password=serializer.validated_data["password"], 
 
     )
+    
+    
+def sign_in_core(request: HttpRequest) -> UserModel:
+    data = JSONParser().parse(request)
+    username = data["username"]
+    password = data["password"]
+    try:
+        user = UserModel.objects.get(username=username)
+        if not user.check_password(password):
+            raise AuthenticationFailed()
+    except UserModel.DoesNotExist:
+        raise AuthenticationFailed()
+    return user
+
+
+def get_user_core(request: HttpRequest) -> UserModel:
+    user = UserModel.objects.get(id=request.user.id)
+    return GetUserResponseSerializer(user)
     

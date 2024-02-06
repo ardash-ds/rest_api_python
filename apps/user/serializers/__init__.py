@@ -1,5 +1,6 @@
-from .user import UserRegistrationRequestSerializer
+from .user import UserRegistrationRequestSerializer, GetUserResponseSerializer
 
 __all__ = (
     'UserRegistrationRequestSerializer',
+    'GetUserResponseSerializer',
 )
