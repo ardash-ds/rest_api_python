@@ -1,0 +1,11 @@
+.idea/
+venv/
+.venv/
+**/media/*
+**/static/admin/*
+**/static/django_mptt_admin/*
+**/static/mptt/*
+**/static/rest_framework/*
+**/__pycache__/
+**/migrations/*
+.env
