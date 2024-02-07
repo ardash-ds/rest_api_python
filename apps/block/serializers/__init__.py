@@ -1,7 +1,7 @@
 from .block import (
+    BlockUserRequestSerializer,
     GetListPostsResponseSerialiser,
     PostRequestSerializer, 
-    BlockUserRequestSerializer,
 )
 
 __all__ = (

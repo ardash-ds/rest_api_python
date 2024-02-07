@@ -1,6 +1,7 @@
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiResponse,
+    OpenApiParameter,
 )
 
 from rest_framework.decorators import api_view, permission_classes
@@ -14,6 +15,7 @@ from ..core import (
     add_post_core,
     block_subscription_core,
     get_list_posts_core,
+    mark_post_read_core,
 )
 from ..serializers import (
     BlockUserRequestSerializer,
@@ -73,7 +75,6 @@ def block_subscription(request: HttpRequest) -> HttpResponse:
         400: OpenApiResponse(description="Error: Bad request"),
         401: OpenApiResponse(description="Error: Unauthorized"),
         404: OpenApiResponse(description="Error: Not found"),
-        409: OpenApiResponse(description="Error: You are already subscribed"),
         422: OpenApiResponse(description="Error: Unprocessable entity"),
         500: OpenApiResponse(description="Error: Internal server error"),
     },
@@ -83,3 +84,30 @@ def block_subscription(request: HttpRequest) -> HttpResponse:
 def get_list_posts(request: HttpRequest) -> HttpResponse:
     response = get_list_posts_core(request=request)
     return Response(response.data, status=status.HTTP_200_OK)
+
+
+@extend_schema(
+    summary="WORKS: Make post read",
+    description="Pass your ID to make this post read.",
+    parameters=[
+        OpenApiParameter(
+            name="post_user_id",
+            required=True,
+            type=int,
+        ),
+    ],
+    methods=["GET"],
+    responses={
+        200: OpenApiResponse(response=GetListPostsResponseSerialiser),
+        400: OpenApiResponse(description="Error: Bad request"),
+        401: OpenApiResponse(description="Error: Unauthorized"),
+        404: OpenApiResponse(description="Error: Not found"),
+        422: OpenApiResponse(description="Error: Unprocessable entity"),
+        500: OpenApiResponse(description="Error: Internal server error"),
+    },
+)
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def mark_post_read(request: HttpRequest) -> HttpResponse:
+    mark_post_read_core(request=request)
+    return HttpResponse(status=200)

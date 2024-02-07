@@ -41,11 +41,15 @@ def block_subscription_core(request: HttpRequest) -> None:
         serializer.save()
     
 
-def get_list_posts_core(request: HttpRequest) -> None:
+def get_list_posts_core(request: HttpRequest) -> list[PostUserModel]:
     user = request.user
     posts = PostUserModel.objects.filter(user=user).select_related("post")
     return GetListPostsResponseSerialiser(posts, many=True)
     
 
-    
+def mark_post_read_core(request: HttpRequest) -> None:   
+    post_user_id = request.GET.get("post_user_id")
+    post_user = PostUserModel.objects.get(id=post_user_id)
+    post_user.read_status = True
+    post_user.save()
     

@@ -18,9 +18,8 @@ class BlockUserRequestSerializer(serializers.ModelSerializer):
         
 class GetListPostsResponseSerialiser(serializers.ModelSerializer):
     title = serializers.CharField(source='post.title', read_only=True)
+    description = serializers.CharField(source='post.description', read_only=True)
     
     class Meta:
         model = PostUserModel
-        fields = ["id", "read_status", "title"]
-    
-    
+        fields = ["id", "read_status", "title", "description"]
