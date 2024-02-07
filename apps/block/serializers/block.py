@@ -10,16 +10,17 @@ class PostRequestSerializer(serializers.ModelSerializer):
         read_only_fields = ["block", "created_at",]
         
         
-class SubscriptionRequestSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    
-
+class BlockUserRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlockUserModel
+        fields = ["block"]
+        read_only_fields = ["user"]
+        
 class GetListPostsResponseSerialiser(serializers.ModelSerializer):
-#     post = serializers.CharField(sourse="post_user_for_post__title")
-#     read_status = serializers.BooleanField()
+    title = serializers.CharField(source='post.title', read_only=True)
     
     class Meta:
         model = PostUserModel
-        fields = ["post", "read_status"]
+        fields = ["id", "read_status", "title"]
     
     

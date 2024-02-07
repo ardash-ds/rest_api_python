@@ -1,11 +1,11 @@
 from .block import (
     GetListPostsResponseSerialiser,
     PostRequestSerializer, 
-    SubscriptionRequestSerializer,
+    BlockUserRequestSerializer,
 )
 
 __all__ = (
+    "BlockUserRequestSerializer",
     "GetListPostsResponseSerialiser",
     "PostRequestSerializer",
-    "SubscriptionRequestSerializer",
 )

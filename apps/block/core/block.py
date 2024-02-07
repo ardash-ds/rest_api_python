@@ -1,9 +1,15 @@
 from rest_framework.parsers import JSONParser
+from rest_framework.exceptions import APIException
 
 from django.db import transaction
 from django.http import HttpRequest
 
-from ..serializers import PostRequestSerializer, SubscriptionRequestSerializer
+from ...user.models import UserModel
+from ..serializers import (
+    BlockUserRequestSerializer,
+    GetListPostsResponseSerialiser,
+    PostRequestSerializer, 
+)
 from ..models import BlockModel, BlockUserModel, PostUserModel
 
 
@@ -16,21 +22,29 @@ def add_post_core(request: HttpRequest) -> None:
     serializer.validated_data["block"] = block
     post = serializer.save()
     
-    users = BlockUserModel.objects.filter(block=block).values_list("id", flat=True)
+    users = UserModel.objects.filter(block_user_for_user__block=block).values_list("id", flat=True)
     for user_id in users:
         PostUserModel.objects.create(user_id=user_id, post_id=post.id)
 
 
 def block_subscription_core(request: HttpRequest) -> None:
     data = JSONParser().parse(request)
-    serializer = SubscriptionRequestSerializer(data=data)
+    serializer = BlockUserRequestSerializer(data=data)
     serializer.is_valid(raise_exception=True)
-    serializer.validated_data["id"], 
-    BlockUserModel.objects.create(
-        user_id=request.user.id,
-        block_id=serializer.validated_data["id"]
-    )
+    if BlockUserModel.objects.filter(
+        user=request.user,
+        block=serializer.validated_data["block"],
+    ).exists():
+        raise APIException(detail="You are already subscribed")
+    else:
+        serializer.validated_data["user"] = request.user
+        serializer.save()
     
+
+def get_list_posts_core(request: HttpRequest) -> None:
+    user = request.user
+    posts = PostUserModel.objects.filter(user=user).select_related("post")
+    return GetListPostsResponseSerialiser(posts, many=True)
     
 
     

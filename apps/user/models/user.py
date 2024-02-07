@@ -3,6 +3,5 @@ from django.db import models
 
 
 class UserModel(AbstractUser):
-
     class Meta:
         db_table = "user"

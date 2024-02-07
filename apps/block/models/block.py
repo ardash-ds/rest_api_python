@@ -15,7 +15,7 @@ class BlockModel(models.Model):
     
 
 class PostModel(models.Model):
-    title = models.CharField(max_length=100, blank=False, unique=True)
+    title = models.CharField(max_length=100, blank=False)
     description = models.TextField(max_length=140, blank=True)
     created_at = models.DateField(auto_now_add=True)
     block =  models.ForeignKey(
