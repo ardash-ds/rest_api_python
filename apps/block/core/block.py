@@ -10,7 +10,7 @@ from ..serializers import (
     GetListPostsResponseSerialiser,
     PostRequestSerializer, 
 )
-from ..models import BlockModel, BlockUserModel, PostUserModel
+from ..models import BlockModel, BlockUserModel, PostUserModel, PostModel
 
 
 @transaction.atomic
@@ -27,6 +27,7 @@ def add_post_core(request: HttpRequest) -> None:
         PostUserModel.objects.create(user_id=user_id, post_id=post.id)
 
 
+@transaction.atomic
 def block_subscription_core(request: HttpRequest) -> None:
     data = JSONParser().parse(request)
     serializer = BlockUserRequestSerializer(data=data)
@@ -47,9 +48,20 @@ def get_list_posts_core(request: HttpRequest) -> list[PostUserModel]:
     return GetListPostsResponseSerialiser(posts, many=True)
     
 
+@transaction.atomic
 def mark_post_read_core(request: HttpRequest) -> None:   
-    post_user_id = request.GET.get("post_user_id")
-    post_user = PostUserModel.objects.get(id=post_user_id)
+    post_user = PostUserModel.objects.get(id=request.GET.get("post_user_id"))
     post_user.read_status = True
     post_user.save()
+    
+    
+@transaction.atomic
+def delete_post_core(request: HttpRequest) -> None:
+    post = PostModel.objects.get(
+        id=request.GET.get("post_id"),
+        block__user=request.user,
+    )
+    post_user_list = PostUserModel.objects.filter(post=post)
+    post_user_list.delete()
+    post.delete()
     

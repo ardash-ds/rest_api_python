@@ -1,6 +1,12 @@
 from django.urls import path
 
-from ..views import add_post, block_subscription, get_list_posts, mark_post_read
+from ..views import (
+    add_post, 
+    block_subscription, 
+    get_list_posts, 
+    delete_post,
+    mark_post_read,
+)
     
 
 urlpatterns = [
@@ -23,5 +29,10 @@ urlpatterns = [
         route="mark_post_read/",
         view=mark_post_read,
         name="mark_post_read",
+    ),
+    path(
+        route="delete_post/",
+        view=delete_post,
+        name="delete_post",
     ),
 ]

@@ -15,6 +15,7 @@ from ..core import (
     add_post_core,
     block_subscription_core,
     get_list_posts_core,
+    delete_post_core,
     mark_post_read_core,
 )
 from ..serializers import (
@@ -23,6 +24,7 @@ from ..serializers import (
     PostRequestSerializer, 
 )
 
+# =============================================POST=============================================
 
 @extend_schema(
     summary="WORKS: Create post",
@@ -65,6 +67,7 @@ def block_subscription(request: HttpRequest) -> HttpResponse:
     block_subscription_core(request=request)
     return HttpResponse(status=200)
 
+# =============================================GET=============================================
 
 @extend_schema(
     summary="WORKS: Get list of posts",
@@ -110,4 +113,32 @@ def get_list_posts(request: HttpRequest) -> HttpResponse:
 @permission_classes([IsAuthenticated])
 def mark_post_read(request: HttpRequest) -> HttpResponse:
     mark_post_read_core(request=request)
+    return HttpResponse(status=200)
+
+# =============================================DELETE=============================================
+
+@extend_schema(
+    summary="WORKS: Delete post",
+    description="Pass the post ID for deletion.",
+    parameters=[
+        OpenApiParameter(
+            name="post_id",
+            required=True,
+            type=int,
+        ),
+    ],
+    methods=["DELETE"],
+    responses={
+        200: OpenApiResponse(description="Post was successfully deleted"),
+        400: OpenApiResponse(description="Error: Bad request"),
+        401: OpenApiResponse(description="Error: Unauthorized"),
+        404: OpenApiResponse(description="Error: Not found"),
+        422: OpenApiResponse(description="Error: Unprocessable entity"),
+        500: OpenApiResponse(description="Error: Internal server error"),
+    },
+)
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_post(request: HttpRequest) -> HttpResponse:
+    delete_post_core(request=request)
     return HttpResponse(status=200)
