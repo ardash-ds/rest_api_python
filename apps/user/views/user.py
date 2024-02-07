@@ -49,7 +49,7 @@ def sign_up(request: HttpRequest) -> HttpResponse:
         "user",
     ],
 )
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def sign_in(request: HttpRequest) -> HttpResponse:
     user = sign_in_core(request=request)
@@ -70,7 +70,7 @@ def sign_in(request: HttpRequest) -> HttpResponse:
         "user",
     ],
 )
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_user(request: HttpRequest) -> HttpResponse:
     response = get_user_core(request=request)

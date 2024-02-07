@@ -1,5 +1,6 @@
-from .block import add_post
+from .block import add_post, block_subscription
 
 __all__ = (
-    'add_post',
+    "add_post",
+    "block_subscription",
 )

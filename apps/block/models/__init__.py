@@ -1,7 +1,8 @@
-from .block import BlockModel, PostModel, SubscriptionModel
+from .block import BlockModel, BlockUserModel, PostModel, PostUserModel
 
 __all__=(
     "BlockModel",
+    "BlockUserModel",
     "PostModel",
-    "SubscriptionModel",
+    "PostUserModel",
 )
