@@ -1,0 +1,27 @@
+  version: "3.9"
+
+  services:
+    tests:
+      container_name: block_tests
+      image: block_tests
+      build:
+        context: ${PWD}
+        dockerfile: docker/Dockerfile
+      command: >
+        bash -c "python manage.py makemigrations &&
+        python manage.py migrate &&
+        python manage.py test"
+      volumes:
+        - ${PWD}/:/app
+      env_file:
+        - ${PWD}/.env
+      depends_on:
+        postgres:
+          condition: service_healthy
+      networks:
+        - block_net
+
+
+  networks:
+    block_net:
+      driver: bridge

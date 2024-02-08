@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     
     "apps.block",
     "apps.user",
+    "core.tasks",
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,8 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        # "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,10 +89,21 @@ SITE_ID = 1
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USERNAME'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': env.str('DB_HOST'),
+        'PORT': env.int('DB_PORT'),
     }
 }
 
@@ -202,3 +215,11 @@ CSRF_COOKIE_SAMESITE = "Lax"
 # Session cookie
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE")
 SESSION_COOKIE_SAMESITE = "Lax"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'   # отправка писем в консоль
+
+# Celery
+CELERY_BROKER_URL = env.str('SECRET_KEY')
+CELERY_RESULT_BACKEND = env.str('SECRET_KEY')
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

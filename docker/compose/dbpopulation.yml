@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db_population:
+    container_name: block_db_population
+    image: block_population
+    build:
+      context: ${PWD}
+      dockerfile: docker/Dockerfile
+    command: >
+      bash -c "python manage.py flush --no-input &&
+              python manage.py entity_population"
+    volumes:
+      - ${PWD}/:/app
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - block_net
+
+networks:
+  block_net:
+    driver: bridge
