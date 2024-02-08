@@ -15,13 +15,15 @@ migrations_container = -f $(compose_directory)/migrations.yml
 population_container = -f $(compose_directory)/dbpopulation.yml
 tests_container = -f $(compose_directory)/tests.yml
 redis_container = -f $(compose_directory)/redis.yml
+worker_container = -f $(compose_directory)/worker.yml
+
 
 capture_exit_code = --abort-on-container-exit --exit-code-from
 exit_code_population = db_population
 exit_code_migrations = db_migrations
 exit_code_tests = tests
 
-compose_application := $(docker_v2) $(main_container) $(db_container) $(app_container) --env-file .env
+compose_application := $(docker_v2) $(main_container) $(db_container) $(app_container) $(redis_container) $(worker_container) --env-file .env
 compose_db := $(docker_v2) $(main_container) $(db_container) --env-file .env
 compose_migrations := $(docker_v2) $(main_container) $(db_container) $(migrations_container) --env-file .env
 compose_population := $(docker_v2) $(main_container) $(db_container) $(population_container) --env-file .env

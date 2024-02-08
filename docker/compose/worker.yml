@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  worker:
+    container_name: block_worker
+    image: block_worker
+    restart: unless-stopped
+    build:
+      context: ${PWD}
+      dockerfile: docker/Dockerfile
+    command: >
+      bash -c "celery -A config worker -l info -B"
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    volumes:
+      - ${PWD}/:/app
+    depends_on:
+      redis:
+        condition: service_healthy
+    env_file:
+      - ${PWD}/.env
+    networks:
+      - block_net
+
+networks:
+  block_net:
+    driver: bridge

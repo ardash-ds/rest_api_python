@@ -13,7 +13,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'sending_posts_every_day': {
         'task': 'core.tasks.tasks.sending_out_posts',
-        'schedule': 3,
-        # 'args': (5,),
+        'schedule': crontab(minute=0, hour=0),
     },
 }

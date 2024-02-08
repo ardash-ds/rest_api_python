@@ -23,6 +23,7 @@ def sign_up_core(request: HttpRequest) -> None:
     user = UserModel.objects.create_user(
         username=serializer.validated_data["username"], 
         password=serializer.validated_data["password"], 
+        email="temp@temp.com"
     )
     BlockModel.objects.create(user=user)
     
