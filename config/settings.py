@@ -89,24 +89,24 @@ SITE_ID = 1
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql', 
-#         'NAME': env.str('DB_NAME'),
-#         'USER': env.str('DB_USERNAME'),
-#         'PASSWORD': env.str('DB_PASSWORD'),
-#         'HOST': env.str('DB_HOST'),
-#         'PORT': 5432,
-#         # 'PORT': env.int('DB_PORT'),
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', 
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USERNAME'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': env.str('DB_HOST'),
+        'PORT': 5432,
+        # 'PORT': env.int('DB_PORT'),
+    }
+}
 
 
 # Password validation
@@ -220,7 +220,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'   # отправка писем в консоль
 
 # Celery
-CELERY_BROKER_URL = env.str('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = env.str('SECRET_KEY')
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

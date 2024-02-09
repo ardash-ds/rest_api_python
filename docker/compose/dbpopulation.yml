@@ -9,7 +9,7 @@ services:
       dockerfile: docker/Dockerfile
     command: >
       bash -c "python manage.py flush --no-input &&
-              python manage.py entity_population"
+              python manage.py loaddata population/fixtures/load_data.json"
     volumes:
       - ${PWD}/:/app
     env_file:

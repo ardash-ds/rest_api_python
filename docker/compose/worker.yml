@@ -11,8 +11,8 @@ services:
     command: >
       bash -c "celery -A config worker -l info -B"
     environment:
-      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
       - ${PWD}/:/app
     depends_on:

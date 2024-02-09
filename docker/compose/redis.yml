@@ -3,11 +3,11 @@ version: '3.9'
 services:
   redis:
     container_name: block_redis
-    image: redis:7.0
+    image: redis:latest
     restart: unless-stopped
     ports:
       - '${REDIS_PORT}:6379'
-    command: redis-server --port 6379 --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    command: redis-server --port 6379 --loglevel warning
     env_file:
       - ${PWD}/.env
     healthcheck:

@@ -1,12 +1,7 @@
 # ============================================VARIABLES===========================================
 
-compose_directory = docker/compose
-# application_directory = apps
-# core_directory = core
-# fixtures_directory = fixtures
-# code_directory = $(application_directory) $(core_directory) $(fixtures_directory)
-
 docker_v2 = docker compose
+compose_directory = docker/compose
 
 main_container = -f $(compose_directory)/main.yml
 app_container = -f $(compose_directory)/app.yml
@@ -39,6 +34,10 @@ compose_tests := $(docker_v2) $(main_container) $(db_container) $(tests_containe
 build:
 	$(compose_application) build
 
+
+.PHONY: build with no cache
+build-nc:
+	$(compose_application) build --no-cache
 
 .PHONY: app
 app:

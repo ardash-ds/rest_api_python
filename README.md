@@ -1,36 +1,42 @@
 ## Установка
 
+Если у вас Windows, используйте WSl для разворачивания проекта:
+Для установки WSL выполните следующие команды:
+```
+wsl --install
+wsl --update
+```
+
 1. Склонируйте репозиторий 
 
 ```
 git clone https://github.com/ardash-ds/rest_api_python.git
 ```
 
-2. Установите виртуальное окружение и активируйие его
+2. Установите виртуальное окружение, активируйие его и установите зависимости
+(Этот шаг можно пропустить)
 
 
 Для windows:
 ```
 python -m venv venv
 venv\scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
 Для linux:
 ```
 python3 -m venv venv
 source venv/bin/activate
-```
-
-3. Установите зависимости
-
-```
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4. Добавьте в корень проекта файл с переменными окружения .env
+3. Добавьте в корень проекта файл с переменными окружения .env
 
 
-5. Выполните команды для сборки проекта
+4. Выполните команды для сборки проекта
 
 ```
 make build
@@ -40,33 +46,51 @@ make app
 ```
 
 
-Адрес свагера: [http://127.0.0.1:8000/docs/]
+Адрес свагера: [http://localhost:8000/docs/]
 
+Данные для авторизации
+
+```
+username: user1 / user2 / user3 / user4 ... / user 10
+password: string (для всех)
+```
 
 ## Архитектура
 
 ```
-apps
-├── core
-│   ├──  block.py
-│   └──  user.py
+project_dir
 │
-├── models
-│   ├──  block.py
-│   └──  user.py
-│
-├── urls
-│   ├──  block.py
-│   └──  user.py
-│
-├── views
-│   ├──  block.py
-│   └──  user.py
+├── apps
+│    ├── user
+│    │    ├── core
+│    │    │     └──  user.py
+│    │    │
+│    │    ├── models
+│    │    │     └──  user.py
+│    │    │
+│    │    ├── serializers
+│    │    │     └──  user.py
+│    │    │
+│    │    ├── urls
+│    │    │     └──  user.py
+│    │    │ 
+│    │    └── views
+│    │          └──  user.py
+│    │    
+│    └── block
+│         ...  
 │ 
-├── serializers
-│   ├──  block.py
-│   └──  user.py
+├── config
+│    ├── settings.py
+│    ├── celery.py
+│   ...
+│
+├── core
+│    ├── serices
+│    └── tasks
+├── docker
+│    ├── compose
+│    └── Dockerfile
 ...
-
 
 ```
